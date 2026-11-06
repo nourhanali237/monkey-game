@@ -1,0 +1,129 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Monkey’s Banana Tree</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Baloo+2:wght@600;800&display=swap">
+<style>
+:root{--panel:#fff8dc;--ink:#4a3410;--card:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--panel:#33280f;--ink:#fdf0c8;--card:#4d3d19}}
+:root[data-theme="dark"]{--panel:#33280f;--ink:#fdf0c8;--card:#4d3d19}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{font-family:'Baloo 2','Trebuchet MS',system-ui,sans-serif;background:var(--panel);color:var(--ink);display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:4px 14px}
+h1{margin:0;font-size:clamp(16px,1.8vw,24px);white-space:nowrap}
+#scene{position:relative;container-type:size;--cw:min(15cqw,27cqh);--mw:min(10cqw,19cqh);overflow:hidden;background:linear-gradient(#7fd0ff,#e6f8ff 70%)}
+#scene>*{position:absolute}
+.sun{right:4%;top:3%;font-size:7cqw;animation:spin 40s linear infinite}
+.cloud{font-size:7cqw;animation:drift 55s linear infinite}
+@keyframes drift{from{left:-12%}to{left:105%}}@keyframes spin{to{transform:rotate(360deg)}}
+.grass{left:0;right:0;bottom:0;height:11%;background:linear-gradient(#6fd24f,#3e9a3a)}
+.trunk{left:50%;width:7cqw;margin-left:-3.5cqw;bottom:8%;height:76%;border-radius:2cqw 2cqw 0 0;background:repeating-linear-gradient(#a8742f 0 5cqh,#8c5c22 5cqh 5.7cqh)}
+.lf{left:50%;bottom:83%;width:20cqw;height:6cqw;transform-origin:0 50%;border-radius:100% 0;background:linear-gradient(#45b84b,#1f7a33)}
+.br{height:max(1.8cqh,8px);width:23cqw;border-radius:10px;background:linear-gradient(#8cc63f,#4a8a2a);box-shadow:0 3px 0 #2f6b22;z-index:2}
+.br.done{background:linear-gradient(#ffe066,#e8a317);box-shadow:0 3px 0 #b97a0a}
+.br.cur{animation:glow 1.3s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 3px 0 #2f6b22,0 0 18px 6px #fff27a}}
+.nan{font-size:4.5cqw;z-index:1;font-style:normal}
+.fl{font-size:3cqw;font-style:normal}
+#card{width:var(--cw);height:var(--cw);transform:translateX(-50%);z-index:8;display:grid;place-items:center;background:#fffbe6;border:.7cqw solid #4a8a2a;border-radius:2.5cqw;box-shadow:0 8px 0 #2f6b22,0 14px 20px rgba(0,0,0,.25);font:700 calc(var(--cw)*.82)/1 Amiri,'Noto Naskh Arabic','Traditional Arabic',serif;color:#14532d;direction:rtl}
+#card span{transform:translateY(-6%)}
+#monk{width:var(--mw);transform:translateX(-50%);transition:left .9s ease-in-out,bottom .9s ease-in-out;z-index:6}
+#monk.hid{opacity:0}#mi svg{display:block;width:100%;overflow:visible}
+#msg{left:50%;top:5%;transform:translateX(-50%);z-index:20;background:#fff;color:#8a5a00;border:4px solid #f5b700;border-radius:30px;padding:.2em 1em;font-weight:800;font-size:min(4.6cqw,10cqh);opacity:0;pointer-events:none;white-space:nowrap}
+#msg.bad{border-color:#4aa3e8;color:#1c5d99}#msg.show{animation:pop .5s forwards}
+@keyframes pop{0%{opacity:0;transform:translateX(-50%) scale(.5)}60%{transform:translateX(-50%) scale(1.1)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
+.fx{z-index:30;font-size:3cqw;pointer-events:none}
+#zoom{left:50%;top:50%;transform:translate(-50%,-50%);z-index:25;background:#fff;border:8px solid #4a8a2a;border-radius:6cqmin;padding:0 6cqmin;font:700 min(48cqh,26cqw)/1.35 Amiri,'Noto Naskh Arabic',serif;color:#14532d;cursor:pointer;direction:rtl;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+/* ---- compact stats (in header) ---- */
+.stats{display:flex;gap:6px;flex-wrap:wrap;flex:1;justify-content:center;align-items:center}
+.st{flex:none;display:flex;align-items:center;gap:6px;background:var(--card);border-radius:999px;padding:1px 12px;box-shadow:0 2px 5px rgba(0,0,0,.12);white-space:nowrap}
+.st small{font-size:12px;opacity:.75}.st b{font-size:clamp(15px,1.5vw,20px)}
+#cl{font-family:Amiri,'Noto Naskh Arabic',serif;font-size:26px!important;line-height:1.2}
+/* ---- compact control dock ---- */
+.panel{padding:6px 14px 8px;display:grid;gap:6px;background:var(--panel)}
+.bar{height:8px;background:#ecdca8;border-radius:10px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#8cc63f,#ffd23f);transition:width .6s}
+.row{display:flex;gap:8px;flex-wrap:nowrap;align-items:stretch}
+.b{font:inherit;font-weight:800;border:0;border-radius:12px;padding:8px 10px;font-size:clamp(12px,1.15vw,16px);cursor:pointer;color:#fff;background:#3b82c4;box-shadow:0 3px 0 rgba(0,0,0,.28);flex:1;min-width:0;white-space:nowrap}
+.b:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.28)}.b:disabled{opacity:.45;cursor:not-allowed}
+.b.ok{background:#2eaf4a;flex:3;font-size:clamp(16px,1.8vw,24px);padding:10px}.b.no{background:#e24b4b;flex:3;font-size:clamp(16px,1.8vw,24px);padding:10px}
+.b.am{background:#e59a12}.b.pu{background:#8a5bd0}.b.gr{background:#6b7a70}
+@media (max-width:760px){.row{flex-wrap:wrap}.b.ok,.b.no{flex:1 1 45%}.b{flex:1 1 30%}}
+.ov{position:fixed;inset:0;z-index:100;display:grid;place-items:center;align-content:center;gap:14px;text-align:center;color:#fff;background:rgba(70,45,5,.62);backdrop-filter:blur(5px);padding:20px}
+.ov.hide{display:none}.ov h2{margin:0;font-size:clamp(28px,5.6vw,66px);text-shadow:0 4px 0 rgba(0,0,0,.3)}.ov p{margin:0;font-size:clamp(16px,2.4vw,28px)}
+.ov .b{flex:none;font-size:clamp(22px,3vw,36px);padding:14px 40px;background:#2eaf4a}
+.big{font-size:clamp(40px,7vw,90px)}
+</style></head><body>
+<header><h1>🐒 Monkey’s Banana Tree</h1>
+<div class="stats"><div class="st"><small>Current letter</small><b id="cl">–</b></div><div class="st"><small>Correct</small><b id="sc">0</b></div><div class="st"><small>Incorrect attempts</small><b id="sw">0</b></div><div class="st"><small>Completed letters</small><b id="sd">0 / 10</b></div><div class="st"><small>Stars</small><b id="ss">—</b></div></div>
+<button class="b gr" id="snd" style="flex:none;padding:5px 14px">🔊 Sound ON</button></header>
+<main id="scene">
+<div class="sun">☀️</div><div class="cloud" style="top:4%;animation-delay:-8s">☁️</div><div class="cloud" style="top:16%;animation-delay:-35s">☁️</div>
+<div class="trunk"></div><div class="grass"></div>
+<div id="msg"></div><div id="card" hidden><span id="cs"></span></div>
+<div id="monk" class="hid"><div id="mi"><svg viewBox="0 0 100 100"><path d="M74 82Q104 80 96 50Q92 40 86 48" fill="none" stroke="#7a4518" stroke-width="7" stroke-linecap="round"/><ellipse cx="50" cy="72" rx="26" ry="24" fill="#9b5e2b"/><ellipse cx="50" cy="76" rx="16" ry="16" fill="#f1c58f"/><ellipse cx="24" cy="72" rx="8" ry="15" fill="#9b5e2b"/><ellipse cx="76" cy="72" rx="8" ry="15" fill="#9b5e2b"/><circle cx="26" cy="36" r="11" fill="#9b5e2b"/><circle cx="74" cy="36" r="11" fill="#9b5e2b"/><circle cx="26" cy="36" r="6" fill="#ffb3a0"/><circle cx="74" cy="36" r="6" fill="#ffb3a0"/><circle cx="50" cy="38" r="24" fill="#9b5e2b"/><ellipse cx="50" cy="44" rx="18" ry="16" fill="#f1c58f"/><circle cx="41" cy="37" r="6" fill="#fff"/><circle cx="59" cy="37" r="6" fill="#fff"/><circle id="p1" cx="41" cy="38" r="3.2" fill="#222"/><circle id="p2" cx="59" cy="38" r="3.2" fill="#222"/><ellipse cx="46" cy="45" rx="1.6" ry="1.2" fill="#7a4518"/><ellipse cx="54" cy="45" rx="1.6" ry="1.2" fill="#7a4518"/><path id="mo" d="M40 50Q50 59 60 50" fill="none" stroke="#6b3a12" stroke-width="3" stroke-linecap="round"/></svg></div></div>
+<div id="zoom" hidden></div>
+</main>
+<section class="panel">
+<div class="bar"><i id="bar"></i></div>
+<div class="row"><button class="b no" id="bw">WRONG ✗</button><button class="b ok" id="bc">CORRECT ✓</button><button class="b pu" id="bs">SHOW LETTER</button><button class="b am" id="bk">NEXT / SKIP</button><button class="b" id="br">RETRY</button><button class="b gr" id="bp">PAUSE</button><button class="b gr" id="bx">RESTART</button></div>
+</section>
+<div class="ov" id="welcome"><div class="big">🐒🌴🍌</div><h2>MONKEY’S BANANA TREE! 🐒🍌</h2><p>Help Monkey climb the tree and get his bananas!</p><button class="b" id="start">START GAME</button></div>
+<div class="ov hide" id="pause"><h2>⏸ Paused</h2><button class="b" id="resume">RESUME</button></div>
+<div class="ov hide" id="win"><div class="big">🎉🐒🍌🎉</div><h2>HOORAY! MONKEY GOT HIS BANANAS! 🐒🍌</h2><p id="wt"></p><p class="big" id="wst"></p><button class="b" id="again">PLAY AGAIN</button></div>
+<script>
+const $=id=>document.getElementById(id),sc=$('scene'),M=$('monk'),MI=$('mi'),sleep=ms=>new Promise(r=>setTimeout(r,ms)),rnd=n=>Math.floor(Math.random()*n),pick=a=>a[rnd(a.length)];
+const LET=['د','ذ','ر','ز','س','ش','ص','ض','ط','ظ'],N=10;
+/* stops: 0 = ground, 1..10 = branches, 11 = bananas */
+const PX=[41],PY=[5];for(let i=1;i<=N;i++){PX.push(50+(i%2?10:-10));PY.push(12+(i-1)*6.6)}PX.push(50);PY.push(82);
+const PRAISE=['Amazing!','Excellent!','Well done!','You did it!'],OOPS=['Oops! Try again!','Let’s try one more time!','You can do it!'];
+let order=[],pos=0,ok=0,bad=0,sessOk=0,playing=false,busy=false,paused=false,soundOn=true,zt,mt,lastKey='';
+function shuffle(){let a;do{a=[...LET];for(let i=N-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}}while(a.join()==LET.join());return a}
+function el(t,c,h){const e=document.createElement(t);e.className=c;if(h)e.textContent=h;return e}
+/* ---- sound ---- */
+let AC;function ac(){if(!AC)try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}if(AC&&AC.state=='suspended')AC.resume();return AC}
+function tone(f,t,d,ty,v,f2){const a=ac();if(!a||!soundOn)return;const o=a.createOscillator(),g=a.createGain(),s=a.currentTime+t;o.type=ty;o.frequency.setValueAtTime(f,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g).connect(a.destination);o.start(s);o.stop(s+d+.05)}
+const sfx={climb:()=>[330,392,466,523].forEach((f,i)=>tone(f,i*.18,.15,'square',.08)),slip:()=>{tone(1000,0,.6,'sine',.2,150);tone(180,.6,.3,'square',.1,420)},ok:()=>[523,659,784,1047].forEach((f,i)=>tone(f,i*.1,.25,'triangle',.22)),win:()=>[523,659,784,1047,784,1047,1319,1568].forEach((f,i)=>tone(f,i*.13,.35,'triangle',.25)),eat:()=>[700,500,700,500].forEach((f,i)=>tone(f,i*.12,.1,'sawtooth',.08))};
+$('snd').onclick=()=>{soundOn=!soundOn;$('snd').textContent=soundOn?'🔊 Sound ON':'🔇 Sound OFF'};
+/* ---- scene ---- */
+const brs=[];
+[-60,-25,5,155,185,220].forEach(a=>{const l=el('div','lf');l.style.transform=`rotate(${a}deg)`;sc.append(l)});
+for(let i=1;i<=N;i++){const b=el('div','br'),r=i%2==1;b.style.bottom=PY[i]+'%';b.style[r?'left':'right']='50%';sc.append(b);brs.push(b);const lf=el('i','nan','🌿');lf.style.bottom=PY[i]-1+'%';lf.style.left=(r?50+22:50-22-4.5)+'cqw';lf.style.left=(r?72:28)+'%';lf.style.transform=`translateX(-50%) scaleX(${r?1:-1})`;sc.append(lf)}
+for(let i=0;i<3;i++){const b=el('i','nan','🍌');b.style.left=46+i*4+'%';b.style.bottom=76+(i%2)*2+'%';b.style.zIndex=3;b.id='ban'+i;sc.append(b)}
+[['🌸',3,8],['🌼',10,5],['🌷',20,7],['🌼',75,6],['🌸',86,8],['🌷',94,5],['🌺',30,3],['🌻',66,3]].forEach(([e,x,y])=>{const f=el('i','fl',e);f.style.left=x+'%';f.style.bottom=y+'%';f.style.zIndex=7;sc.append(f)});
+function put(x,y){M.style.left=x+'%';M.style.bottom=`calc(${y}% + 1cqh)`}
+const stop=i=>put(PX[i],PY[i]);
+function wiggle(d){MI.animate([{transform:'rotate(0)'},{transform:'rotate(-9deg) translateY(-6px)'},{transform:'rotate(9deg)'},{transform:'rotate(-9deg) translateY(-6px)'},{transform:'rotate(0)'}],{duration:d})}
+function mood(m){const S={happy:['M40 50Q50 59 60 50','none',3.2],surprised:['M45 54a5 6 0 1 0 10 0a5 6 0 1 0-10 0','#5a1a24',4.6],excited:['M38 49Q50 64 62 49Z','#8a2231',3.8]}[m];$('mo').setAttribute('d',S[0]);$('mo').setAttribute('fill',S[1]);$('p1').setAttribute('r',S[2]);$('p2').setAttribute('r',S[2])}
+function say(t,b){const m=$('msg');m.textContent=t;m.className=(b?'bad ':'')+'show';m.style.animation='none';m.offsetWidth;m.style.animation='';clearTimeout(mt);mt=setTimeout(()=>m.className=b?'bad':'',3200)}
+function fly(e,x,y,dx,dy,d){const s=el('b','fx',e);s.style.left=x+'%';s.style.bottom=y+'%';sc.append(s);s.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${dx/2}px,${dy}px) rotate(180deg)`,opacity:1,offset:.5},{transform:`translate(${dx}px,${dy+120}px) rotate(360deg)`,opacity:0}],{duration:d,easing:'ease-out'}).onfinish=()=>s.remove()}
+function burst(n){for(let i=0;i<n;i++)fly(pick(['⭐','✨','🎉','🌟','🎊']),25+rnd(50),55+rnd(30),(Math.random()-.5)*400,-40-rnd(100),1300+rnd(700))}
+/* ---- state / render ---- */
+function render(){brs.forEach((b,i)=>{b.classList.toggle('done',i<pos);b.classList.toggle('cur',i==pos&&playing)});
+const c=$('card');c.hidden=!playing;if(playing){const i=pos+1,key=pos+order[pos];$('cs').textContent=order[pos];c.style.left=(i%2?PX[i]+16:PX[i]-16)+'%';c.style.bottom=PY[i]+'%';if(key!=lastKey){lastKey=key;c.animate([{transform:'translateX(-50%) scale(0)'},{transform:'translateX(-50%) scale(1.15)'},{transform:'translateX(-50%) scale(1)'}],{duration:450})}}
+$('cl').textContent=playing?order[pos]:'–';$('sc').textContent=ok;$('sw').textContent=bad;$('sd').textContent=pos+' / '+N;$('bar').style.width=pos/N*100+'%';$('ss').textContent='⭐'.repeat(Math.floor(sessOk/5))||'—'}
+function ctrls(){['bc','bw','bs','bk','br','bx'].forEach(i=>$(i).disabled=busy||paused||!playing);$('bp').disabled=busy||!playing;$('bp').textContent=paused?'RESUME':'PAUSE'}
+function hideZoom(){$('zoom').hidden=true;clearTimeout(zt)}
+async function run(fn){if(busy||paused||!playing)return;busy=true;ctrls();hideZoom();try{await fn()}finally{busy=false;ctrls()}}
+function newRound(){order=shuffle();pos=0;ok=0;bad=0;playing=true;busy=false;paused=false;lastKey='';hideZoom();['pause','win','welcome'].forEach(i=>$(i).classList.add('hide'));
+for(let i=0;i<3;i++)$('ban'+i).style.opacity=1;
+M.style.transition='none';stop(0);M.offsetWidth;M.style.transition='';M.classList.remove('hid');MI.animate([{transform:'scale(0)'},{transform:'scale(1.2)'},{transform:'scale(1)'}],{duration:500});mood('happy');render();ctrls();say('Read the letter on the branch!')}
+/* ---- actions ---- */
+async function climb(i){sfx.climb();stop(i);wiggle(900);await sleep(950)}
+async function onCorrect(){ok++;sessOk++;await climb(pos+1);pos++;mood('happy');sfx.ok();burst(10);
+say(sessOk%5==0?'⭐ A new star! Amazing!':pick(PRAISE));
+if(pos==N){render();await win();return}render();await sleep(500)}
+async function onWrong(){bad++;const a=pos,b=pos+1,mx=PX[a]+(PX[b]-PX[a])*.6,my=PY[a]+(PY[b]-PY[a])*.6;
+sfx.climb();put(mx,my);wiggle(900);await sleep(950);
+mood('surprised');sfx.slip();say(pick(OOPS),1);
+M.style.transition='left .6s ease-in,bottom .6s cubic-bezier(.3,0,.8,.6)';put(PX[a],PY[a]-7);MI.animate([{transform:'rotate(0)'},{transform:'rotate(360deg) scale(.9)'},{transform:'rotate(720deg)'}],{duration:700});await sleep(750);
+M.style.transition='';put(PX[a],PY[a]);MI.animate([{transform:'scale(.85,1.15)'},{transform:'scale(1.15,.85)'},{transform:'scale(1)'}],{duration:500});render();await sleep(600);mood('happy')}
+async function win(){mood('excited');await climb(N+1);sfx.eat();for(let i=0;i<3;i++){fly('🍌',48+i*3,78,(i-1)*140,-60,1400);$('ban'+i).style.opacity=0}wiggle(1500);sfx.win();burst(50);await sleep(1600);playing=false;
+$('wt').textContent=`Completed letters: ${N}/${N}  •  Correct: ${ok}  •  Incorrect attempts: ${bad}`;$('wst').textContent='⭐'.repeat(Math.floor(sessOk/5))||'☆';$('win').classList.remove('hide');render();ctrls()}
+$('bc').onclick=()=>run(onCorrect);$('bw').onclick=()=>run(onWrong);
+$('br').onclick=()=>run(async()=>{mood('happy');say('Let’s read it again!');lastKey='';render()});
+$('bk').onclick=()=>run(async()=>{if(pos>=N-1){say('This is the last letter!');return}const j=pos+1+rnd(N-1-pos);[order[pos],order[j]]=[order[j],order[pos]];mood('happy');say('Here’s a new letter!');render()});
+$('bs').onclick=()=>{if(busy||paused||!playing)return;const z=$('zoom');if(!z.hidden)return hideZoom();z.textContent=order[pos];z.hidden=false;zt=setTimeout(hideZoom,6000)};
+$('zoom').onclick=hideZoom;
+function togglePause(){if(busy||!playing)return;paused=!paused;$('pause').classList.toggle('hide',!paused);ctrls()}
+$('bp').onclick=togglePause;$('resume').onclick=togglePause;
+$('bx').onclick=()=>{if(!busy&&playing)newRound()};
+$('start').onclick=()=>{ac();newRound()};$('again').onclick=()=>{ac();newRound()};
+render();ctrls();stop(0);
+</script></body></html>
